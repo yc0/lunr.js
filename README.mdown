@@ -6,6 +6,10 @@
 
 A bit like Solr, but much smaller and not as bright.
 
+[未分词的中文支持](https://github.com/linfuyan/lunr.js/tree/un-participle)
+
+[分词的中文支持](https://github.com/linfuyan/lunr.js/tree/participle)
+
 ## Example
 
 A very simple search index can be created using the following:
@@ -63,3 +67,5 @@ Browsers that do not support ES5 will require a JavaScript shim for Lunr to work
 ## Contributing
 
 See the [`CONTRIBUTING.mdown` file](CONTRIBUTING.mdown).
+
+
