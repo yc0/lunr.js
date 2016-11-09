@@ -197,7 +197,24 @@ lunr.EventEmitter.prototype.hasHandler = function (name) {
  */
 lunr.tokenizer = function (obj) {
   if (!arguments.length || obj == null || obj == undefined) return []
-  if (Array.isArray(obj)) return obj.map(function (t) { return lunr.utils.asString(t).toLowerCase() })
+  if (Array.isArray(obj)) return obj.map(function (t) { return lunr.utils.asString(t).toLowerCase() }) 
+  var str = obj.toString().replace(/^\s+/, '')
+
+  for (var i = str.length - 1; i >= 0; i--) {
+    if (/\S/.test(str.charAt(i))) {
+      str = str.substring(0, i + 1)
+      break
+    }
+  }
+ 
+
+  var rs = str
+    .split(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\uFE30-\uFFA0|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]+/)
+    .map(function (token) {
+      var t = token.replace(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\uFE30-\uFFA0|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g, '').toLowerCase()
+      
+      return t;
+    });
 
   // TODO: This exists so that the deprecated property lunr.tokenizer.seperator can still be used. By
   // default it is set to false and so the correctly spelt lunr.tokenizer.separator is used unless
@@ -1846,8 +1863,22 @@ lunr.Pipeline.registerFunction(lunr.stopWordFilter, 'stopWordFilter')
  * @see lunr.Pipeline
  */
 lunr.trimmer = function (token) {
-  return token.replace(/^\W+/, '').replace(/\W+$/, '')
+  //by ming300 check token is chinese then not replace   
+  if(isChineseChar(token)){
+    return token;
+  }
+  return token
+    .replace(/^\W+/, '')
+    .replace(/\W+$/, '')
 }
+
+/**
+ **check it contains Chinese (including Japanese and Korean)
+ */
+function isChineseChar(str){     
+   var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;  
+   return reg.test(str);  
+}  
 
 lunr.Pipeline.registerFunction(lunr.trimmer, 'trimmer')
 /*!
