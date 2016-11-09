@@ -195,9 +195,31 @@ lunr.EventEmitter.prototype.hasHandler = function (name) {
  * @see lunr.tokenizer.separator
  * @returns {Array}
  */
+
+var Segment = require('node-segment').Segment;
+
+var segment = new Segment();
+segment.useDefault();
+
 lunr.tokenizer = function (obj) {
   if (!arguments.length || obj == null || obj == undefined) return []
   if (Array.isArray(obj)) return obj.map(function (t) { return lunr.utils.asString(t).toLowerCase() })
+  
+  var str = obj.toString().replace(/^\s+/, '')
+ 
+  for (var i = str.length - 1; i >= 0; i--) {
+    if (/\S/.test(str.charAt(i))) {
+      str = str.substring(0, i + 1)
+      break
+    }
+  }
+  
+  var wordList = segment.doSegment(str);
+
+  return wordList.map(function (token) {
+      return token.w.toLowerCase()
+  })
+
 
   // TODO: This exists so that the deprecated property lunr.tokenizer.seperator can still be used. By
   // default it is set to false and so the correctly spelt lunr.tokenizer.separator is used unless
@@ -1846,7 +1868,8 @@ lunr.Pipeline.registerFunction(lunr.stopWordFilter, 'stopWordFilter')
  * @see lunr.Pipeline
  */
 lunr.trimmer = function (token) {
-  return token.replace(/^\W+/, '').replace(/\W+$/, '')
+  // return token.replace(/^\W+/, '').replace(/\W+$/, '')
+  return token.replace(/^\s+/, '').replace(/^\s+/, '')
 }
 
 lunr.Pipeline.registerFunction(lunr.trimmer, 'trimmer')
