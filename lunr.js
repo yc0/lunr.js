@@ -209,21 +209,21 @@ lunr.tokenizer = function (obj) {
  
 
   var rs = str
-    .split(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\uFE30-\uFFA0|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]+/)
+    .split(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\u3000-\u303F|\uFE30-\uFFA0|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]+/)
     .map(function (token) {
-      var t = token.replace(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\uFE30-\uFFA0|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g, '').toLowerCase()
+      var t = token.replace(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\u3000-\u303F|\uFE30-\uFFA0|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g, '').toLowerCase()
       
       return t;
     });
-
+  return rs;
   // TODO: This exists so that the deprecated property lunr.tokenizer.seperator can still be used. By
   // default it is set to false and so the correctly spelt lunr.tokenizer.separator is used unless
   // the user is using the old property to customise the tokenizer.
   //
   // This should be removed when version 1.0.0 is released.
-  var separator = lunr.tokenizer.seperator || lunr.tokenizer.separator
+  //var separator = lunr.tokenizer.seperator || lunr.tokenizer.separator
 
-  return obj.toString().trim().toLowerCase().split(separator)
+  //return obj.toString().trim().toLowerCase().split(separator)
 }
 
 /**
