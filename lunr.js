@@ -196,7 +196,7 @@ lunr.EventEmitter.prototype.hasHandler = function (name) {
  * @returns {Array}
  */
 
-var Segment = require('node-segment').Segment;
+var Segment = require('segment').Segment;
 
 var segment = new Segment();
 segment.useDefault();
