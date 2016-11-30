@@ -24,6 +24,6 @@
     "test": "make test"
   },
   "dependencies": {
-    "node-segment": "0.0.2"
+    "segment": "0.1.3"
   }
 }
